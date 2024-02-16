@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  semantic_search:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: semantic_search
+    stdin_open: true
+    tty: true
+    ports:
+      - "4567:4567"
+    volumes:
+      - .:/app
+    depends_on:
+      - opensearch
+
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    container_name: opensearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+
+volumes:
+  opensearch_data:
