@@ -1,7 +1,7 @@
 require "openai"
 
 module Llms
-  module OpenAI
+  module Openai
     class Client
       def initialize(client = ::OpenAI::Client.new(access_token: ENV["OPEN_AI_ACCESS_TOKEN"]))
         @client = client
@@ -16,7 +16,11 @@ module Llms
       attr_reader :client
 
       def parameters(text)
-      { model: ENV.fetch("EMBEDDING_MODEL"), input: text }
+        {
+          model: ENV.fetch("EMBEDDING_MODEL"),
+          input: text,
+          dimensions: 256,
+        }
       end
     end
   end
