@@ -3,6 +3,9 @@ Quick spike to see how the hybrid (text + semantic) search works with opensearch
 ### How to run
 
 ```bash
+cp .env_sample .env
+# and add required values 
+
 docker-compose up --build
 
 # Wait for services to spin up
