@@ -4,16 +4,27 @@ Quick spike to see how the hybrid (text + semantic) search works with opensearch
 
 ```bash
 cp .env_sample .env
-# and add required values 
+# and add required values
 
-docker-compose up --build
+# Text search only RAILS
+docker-compose up --build semantic_search_rails
+# Or
+# Hybrid search SINATRAg
+docker-compose up --build semantic_search_sinatra
 
-# Wait for services to spin up
+# Wait for services to spin up...
 
-# Load the data once
+# Create index and load the data once
+# Rails:
+docker exec -it semantic_search_rails rake etl:create_feedback_index
 
-docker exec -it semantic_search ./bin/load_data.rb
+# Or
+# Sinatra:
+docker exec -it semantic_search_sinatra ./bin/load_data.rb
 
-# Visit
+# Visit Rails
+# http://localhost:3000/feedback?q=vaping
+
+# Visit Sinatra
 # http://localhost:4567/search?q=benefits of smoking
 ```

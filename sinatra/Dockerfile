@@ -2,11 +2,11 @@ FROM ruby:3.2.2
 
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock ./
+COPY ./sinatra/Gemfile ./sinatra/Gemfile.lock ./
 
 RUN bundle install
 
-COPY . .
+COPY ./sinatra .
 
 EXPOSE 4567
 CMD ["ruby", "./app.rb"]

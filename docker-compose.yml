@@ -1,11 +1,29 @@
 version: '3.8'
 
 services:
-  semantic_search:
+  semantic_search_rails:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: semantic_search
+      dockerfile: ./rails/Dockerfile
+    container_name: semantic_search_rails
+    stdin_open: true
+    tty: true
+    env_file:
+      - .env
+    environment:
+      - RAILS_ENV=development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./rails:/rails
+    depends_on:
+      - opensearch-dashboards
+
+  semantic_search_sinatra:
+    build:
+      context: .
+      dockerfile: ./sinatra/Dockerfile
+    container_name: semantic_search_sinatra
     stdin_open: true
     tty: true
     env_file:
@@ -13,12 +31,25 @@ services:
     ports:
       - "4567:4567"
     volumes:
-      - .:/app
+      - ./sinatra:/app
+    depends_on:
+      - opensearch-dashboards
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:latest
+    container_name: opensearch-dashboards
+    ports:
+      - 5601:5601
+    expose:
+      - "5601"
+    environment:
+      - "DISABLE_SECURITY_DASHBOARDS_PLUGIN=true"
+      - "OPENSEARCH_HOSTS=http://opensearch:9200"
     depends_on:
       - opensearch
 
   opensearch:
-    image: public.ecr.aws/opensearchproject/opensearch:2
+    image: opensearchproject/opensearch:2
     container_name: opensearch
     ports:
       - "9200:9200"
@@ -38,19 +69,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 50
-
-  opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:latest
-    container_name: opensearch-dashboards
-    ports:
-      - 5601:5601
-    expose:
-      - "5601"
-    environment:
-      - "DISABLE_SECURITY_DASHBOARDS_PLUGIN=true"
-      - "OPENSEARCH_HOSTS=http://opensearch:9200"
-    depends_on:
-      - opensearch
 
 volumes:
   opensearch_data:
