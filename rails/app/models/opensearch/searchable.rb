@@ -1,5 +1,5 @@
 module Opensearch
-  # This will be instantiated once, kinda like a singleton.
+  # This will be instantiated once, when we call this module
   def self.client
     @client ||= OpenSearch::Client.new(url: ENV['OPENSEARCH_URL'], log: true)
   end
