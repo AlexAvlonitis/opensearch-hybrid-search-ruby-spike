@@ -27,7 +27,7 @@ module Opensearch
     end
 
     def create_index(index_name = name.downcase)
-      _client.indices.create(index: index_name)
+      _client.indices.create(index: index_name, body: config)
     end
 
     def delete_index(index_name = name.downcase)
