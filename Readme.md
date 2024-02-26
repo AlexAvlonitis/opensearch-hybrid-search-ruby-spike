@@ -23,7 +23,7 @@ docker exec -it semantic_search_rails rake etl:create_feedback_index
 docker exec -it semantic_search_sinatra ./bin/load_data.rb
 
 # Visit Rails
-# http://localhost:3000/feedback?q=vaping
+# http://localhost:3000/feedback/search?q=vaping
 
 # Visit Sinatra
 # http://localhost:4567/search?q=benefits of smoking
